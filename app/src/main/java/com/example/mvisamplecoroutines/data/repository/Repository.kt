@@ -1,0 +1,36 @@
+package com.example.mvisamplecoroutines.data.repository
+
+import com.example.mvisamplecoroutines.data.source.service.RestFullApi
+import com.example.mvisamplecoroutines.domain.entity.Author
+import com.example.mvisamplecoroutines.domain.entity.Book
+import com.example.mvisamplecoroutines.domain.repository.Repository
+import javax.inject.Inject
+
+class RepositoryImpl @Inject constructor(
+    private val api: RestFullApi
+) : Repository {
+    override suspend fun getAuthors(): List<Author> {
+        return api.getAuthors().map {
+            Author(
+                it.id,
+                it.idBook,
+                it.firstName,
+                it.lastName
+            )
+        }
+    }
+
+    override suspend fun getBooks(): List<Book> {
+        return api.getBooks().map {
+            Book(
+                it.id,
+                it.title,
+                it.description,
+                it.pageCount,
+                it.excerpt,
+                it.date
+            )
+        }
+    }
+
+}
