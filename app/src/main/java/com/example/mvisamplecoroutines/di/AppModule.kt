@@ -2,10 +2,12 @@ package com.example.mvisamplecoroutines.di
 
 import com.example.mvisamplecoroutines.BuildConfig
 import com.example.mvisamplecoroutines.data.repository.RepositoryImpl
+import com.example.mvisamplecoroutines.data.repository.RepositoryModule
 import com.example.mvisamplecoroutines.data.source.service.RestFullApi
 import com.example.mvisamplecoroutines.domain.repository.Repository
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +24,11 @@ import javax.inject.Singleton
 @InstallIn(ApplicationComponent::class)
 class AppModule {
 
+    @ApiKey
+    @Provides
+    fun provideApiKey() = BuildConfig.OMDb_API_KEY
+
+    @BaseUrl
     @Provides
     fun provideBaseUrl() = BuildConfig.BASE_URL
 
@@ -44,7 +51,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient, baseUrl: String, gson: Gson): Retrofit {
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+        @BaseUrl baseUrl: String,
+        gson: Gson
+    ): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(baseUrl)
@@ -56,10 +67,6 @@ class AppModule {
     @Provides
     @Singleton
     fun provideApi(retrofit: Retrofit): RestFullApi = retrofit.create(RestFullApi::class.java)
-
-    @Provides
-    @Singleton
-    fun provideRepository(repository: RepositoryImpl): Repository = repository
 
     private fun createInterceptor(): Interceptor {
         return Interceptor {

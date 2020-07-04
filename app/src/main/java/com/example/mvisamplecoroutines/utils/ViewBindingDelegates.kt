@@ -1,4 +1,4 @@
-package com.example.mvisamplecoroutines.ui
+package com.example.mvisamplecoroutines.utils
 
 import android.view.View
 import android.view.ViewGroup

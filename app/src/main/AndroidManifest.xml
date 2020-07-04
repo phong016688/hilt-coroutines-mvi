@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MVISampleCoroutines"
         tools:ignore="MissingAutoRevokeTolerance">
-        <activity android:name=".ui.main.MainActivity">
+        <activity android:name="com.example.mvisamplecoroutines.ui.activity.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

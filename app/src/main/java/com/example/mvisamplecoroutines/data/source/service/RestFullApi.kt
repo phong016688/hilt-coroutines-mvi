@@ -4,6 +4,7 @@ import com.example.mvisamplecoroutines.data.source.response.BookResponse
 import com.example.mvisamplecoroutines.data.source.response.AuthorResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Query
 
 interface RestFullApi {
     @GET("Authors")
