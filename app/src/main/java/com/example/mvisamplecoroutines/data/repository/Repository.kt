@@ -36,4 +36,8 @@ class RepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override suspend fun login(): String {
+        return ""
+    }
 }

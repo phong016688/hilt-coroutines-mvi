@@ -1,20 +1,23 @@
 package com.example.mvisamplecoroutines.ui.fragment.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.example.mvisamplecoroutines.R
+import com.example.mvisamplecoroutines.ui.activity.main.MainActivity
 import com.example.mvisamplecoroutines.ui.fragment.home.dummy.DummyContent
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * A fragment representing a list of Items.
  */
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
@@ -47,12 +50,14 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    companion object {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as? MainActivity)?.showBottomNavigation()
+    }
 
-        // TODO: Customize parameter argument names
+    companion object {
         const val ARG_COLUMN_COUNT = "column-count"
 
-        // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
             HomeFragment().apply {

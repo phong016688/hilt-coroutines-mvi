@@ -3,20 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/favorite"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title="favorite"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/search"
+        android:id="@+id/userFragment"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="search"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/more"
-        android:title="more"
-        app:showAsAction="never" />
+        android:id="@+id/settingFragment"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="Setting"
+        app:showAsAction="ifRoom" />
 
 </menu>

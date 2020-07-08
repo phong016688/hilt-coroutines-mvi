@@ -22,10 +22,11 @@
         android:label="Home"
         tools:layout="@layout/fragment_home">
         <argument
-            android:name="userArg"
-            android:defaultValue=""
-            app:argType="String"
+            android:name="column-count"
+            android:defaultValue="2"
+            app:argType="integer"
             app:nullable="false" />
+
     </fragment>
 
     <fragment
