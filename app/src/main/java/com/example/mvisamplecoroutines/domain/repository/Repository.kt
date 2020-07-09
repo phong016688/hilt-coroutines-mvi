@@ -6,5 +6,5 @@ import com.example.mvisamplecoroutines.domain.entity.Book
 interface Repository {
     suspend fun getAuthors(): List<Author>
     suspend fun getBooks(): List<Book>
-    suspend fun login(): String
+    suspend fun login(email: String, password: String): String
 }

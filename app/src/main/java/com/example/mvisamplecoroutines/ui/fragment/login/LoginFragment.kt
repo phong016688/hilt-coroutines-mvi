@@ -14,7 +14,9 @@ import com.example.mvisamplecoroutines.utils.viewBindings
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -36,5 +38,10 @@ class LoginFragment : Fragment() {
         view.auth_button.setOnClickListener {
             findNavController().navigate(R.id.homeFragment)
         }
+        handleEvents()
+    }
+
+    private fun handleEvents() {
+
     }
 }

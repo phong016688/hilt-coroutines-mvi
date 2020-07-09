@@ -24,11 +24,11 @@ abstract class BaseViewModel<I : IMviIntent, S : IMviState, A : IMviAction, R : 
 
     private val viewStatesBC: StateFlow<S> by lazy(NONE) { initViewStateFlow() }
 
+    protected abstract fun initState(): S
+
     protected abstract val actionProcessor: FLowTransformer<A, R>
 
     protected abstract val intentFilter: FLowTransformer<I, I>
-
-    protected abstract fun initState(): S
 
     protected abstract suspend fun actionFormIntent(intent: I): A
 

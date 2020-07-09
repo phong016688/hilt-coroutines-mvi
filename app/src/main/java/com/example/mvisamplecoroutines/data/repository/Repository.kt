@@ -8,6 +8,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -37,7 +38,8 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun login(): String {
-        return ""
+    override suspend fun login(email: String, password: String): String {
+        delay(2_000)
+        return "user12345"
     }
 }
