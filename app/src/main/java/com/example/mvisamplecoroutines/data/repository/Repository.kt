@@ -4,10 +4,6 @@ import com.example.mvisamplecoroutines.data.source.service.RestFullApi
 import com.example.mvisamplecoroutines.domain.entity.Author
 import com.example.mvisamplecoroutines.domain.entity.Book
 import com.example.mvisamplecoroutines.domain.repository.Repository
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
