@@ -10,8 +10,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
-import java.lang.Exception
-
 
 @ExperimentalCoroutinesApi
 @FlowPreview
@@ -25,7 +23,7 @@ class LoginViewModel @ViewModelInject constructor(
     override val actionProcessor: FLowTransformer<LoginAction, LoginResult> = { flow ->
         flow.flatMapConcat { action ->
             when (action) {
-                is LoginAction.Initial -> flowOf(LoginResult.Loading)
+                is LoginAction.Initial -> flowOf(LoginResult.Initial)
                 is LoginAction.LoginWithEmailPassword -> login(action.email, action.password)
                 is LoginAction.ValidateEmail -> validateEmail(action.email)
                 is LoginAction.ValidatePassword -> validatePassword(action.password)
@@ -54,6 +52,7 @@ class LoginViewModel @ViewModelInject constructor(
 
     override suspend fun reducer(previousState: LoginState, result: LoginResult): LoginState {
         return when (result) {
+            is LoginResult.Initial -> previousState
             is LoginResult.Loading -> previousState.copy(isLoading = true)
             is LoginResult.LoginSuccess -> previousState.copy(
                 emailValidateErrorMessage = "",
@@ -88,32 +87,29 @@ class LoginViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun login(email: String, password: String): Flow<LoginResult> = flow {
-        emit(LoginResult.Loading)
-        val result = try {
-            LoginResult.LoginSuccess(repository.login(email, password))
-        } catch (ex: Exception) {
-            LoginResult.LoginFailure(ex.message.toString())
-        }
-        emit(result)
-    }.flowOn(Dispatchers.IO + Job())
+    private fun login(email: String, password: String): Flow<LoginResult> =
+        flow<LoginResult> { emit(LoginResult.LoginSuccess(repository.login(email, password))) }
+            .onStart { emit(LoginResult.Loading) }
+            .catch { emit(LoginResult.LoginFailure(it.message.toString())) }
+            .flowOn(Dispatchers.IO + Job())
 
-    private fun validateEmail(email: String): Flow<LoginResult> = flow {
+
+    private fun validateEmail(email: String): Flow<LoginResult> {
         val result = if (validator.validateEmail(email).isEmpty()) {
             LoginResult.EmailValid
         } else {
             LoginResult.EmailInValid(validator.validateEmail(email))
         }
-        emit(result)
+        return flowOf(result)
     }
 
-    private fun validatePassword(password: String): Flow<LoginResult> = flow {
+    private fun validatePassword(password: String): Flow<LoginResult> {
         val result = if (validator.validatePassword(password).isEmpty()) {
             LoginResult.PasswordValid
         } else {
             LoginResult.PasswordInValid(validator.validatePassword(password))
         }
-        emit(result)
+        return flowOf(result)
     }
 
 }

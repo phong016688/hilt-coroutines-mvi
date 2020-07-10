@@ -12,9 +12,11 @@ import com.example.mvisamplecoroutines.ui.activity.main.MainActivity
 import com.example.mvisamplecoroutines.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.internal.InjectedFieldSignature
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -83,7 +85,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 .debounce(500)
                 .map { binding.emailEditText.text?.toString() to binding.passwordEditText.text?.toString() }
                 .map { LoginIntent.SubmitLogin(it.first ?: "", it.second ?: "") }
-        ).onEach { viewModel.processIntents(it) }
+        )
+            .onStart { viewModel.processIntents(LoginIntent.InitialIntent) }
+            .onEach { viewModel.processIntents(it) }
             .launchIn(lifecycleScope)
     }
 }

@@ -1,10 +1,10 @@
 package com.example.mvisamplecoroutines.di
 
 import com.example.mvisamplecoroutines.BuildConfig
-import com.example.mvisamplecoroutines.data.repository.RepositoryImpl
-import com.example.mvisamplecoroutines.data.repository.RepositoryModule
 import com.example.mvisamplecoroutines.data.source.service.RestFullApi
-import com.example.mvisamplecoroutines.domain.repository.Repository
+import com.example.mvisamplecoroutines.ui.fragment.login.LoginModule
+import com.example.mvisamplecoroutines.utils.Validator
+import com.example.mvisamplecoroutines.utils.ValidatorImpl
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Binds
@@ -12,6 +12,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -22,7 +24,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(ApplicationComponent::class)
-class AppModule {
+object AppModule {
 
     @ApiKey
     @Provides
@@ -33,9 +35,11 @@ class AppModule {
     fun provideBaseUrl() = BuildConfig.BASE_URL
 
     @Provides
+    @Singleton
     fun provideGson(): Gson = Gson()
 
     @Provides
+    @Singleton
     fun provideInterceptor(): Interceptor {
         return createInterceptor()
     }

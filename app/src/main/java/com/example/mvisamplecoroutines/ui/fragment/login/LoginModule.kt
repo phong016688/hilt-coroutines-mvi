@@ -1,18 +1,19 @@
 package com.example.mvisamplecoroutines.ui.fragment.login
 
-import com.example.mvisamplecoroutines.utils.Validator
-import com.example.mvisamplecoroutines.utils.ValidatorImpl
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.scopes.FragmentScoped
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
 @ExperimentalCoroutinesApi
 @FlowPreview
 @Module
-@InstallIn(LoginFragment::class)
-abstract class LoginModule {
-    @Binds
-    abstract fun bindValidator(validatorImpl: ValidatorImpl): Validator
+@InstallIn(FragmentComponent::class)
+class LoginModule {
+    @Provides
+    @FragmentScoped
+    fun providerStringTest(): String = "123456789"
 }

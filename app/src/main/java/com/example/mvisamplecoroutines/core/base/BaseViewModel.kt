@@ -3,11 +3,8 @@ package com.example.mvisamplecoroutines.core.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mvisamplecoroutines.core.*
-import com.example.mvisamplecoroutines.ui.fragment.login.LoginIntent
 import com.example.mvisamplecoroutines.utils.compose
 import com.example.mvisamplecoroutines.utils.logDebug
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableTransformer
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
@@ -22,7 +19,7 @@ abstract class BaseViewModel<I : IMviIntent, S : IMviState, A : IMviAction, R : 
 
     private val intentsBC: BroadcastChannel<I> = BroadcastChannel(capacity = Channel.BUFFERED)
 
-    private val viewStatesBC: StateFlow<S> by lazy(NONE) { initViewStateFlow() }
+    private val viewStates: StateFlow<S> by lazy(NONE) { initViewStateFlow() }
 
     protected abstract fun initState(): S
 
@@ -36,7 +33,7 @@ abstract class BaseViewModel<I : IMviIntent, S : IMviState, A : IMviAction, R : 
 
     override suspend fun processIntents(intent: I) = intentsBC.send(intent)
 
-    override fun states(): Flow<S> = viewStatesBC
+    override fun states(): Flow<S> = viewStates
 
     private fun initViewStateFlow(): StateFlow<S> {
         return MutableStateFlow(initState()).apply {

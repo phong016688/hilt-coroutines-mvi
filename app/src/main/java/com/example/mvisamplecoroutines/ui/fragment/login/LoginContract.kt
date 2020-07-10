@@ -28,6 +28,7 @@ sealed class LoginResult : IMviResult {
     data class EmailInValid(val errorMessage: String) : LoginResult()
     data class PasswordInValid(val errorMessage: String) : LoginResult()
     object Loading : LoginResult()
+    object Initial : LoginResult()
 }
 
 data class LoginState(
