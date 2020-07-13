@@ -1,22 +1,24 @@
 package com.example.mvisamplecoroutines.core.base
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.mvisamplecoroutines.core.*
 import com.example.mvisamplecoroutines.utils.compose
 import com.example.mvisamplecoroutines.utils.logDebug
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import com.example.mvisamplecoroutines.utils.replay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import java.lang.RuntimeException
 import kotlin.LazyThreadSafetyMode.*
 
+@InternalCoroutinesApi
 @FlowPreview
 @ExperimentalCoroutinesApi
 abstract class BaseViewModel<I : IMviIntent, S : IMviState, A : IMviAction, R : IMviResult>
     : ViewModel(), IMviViewModel<I, S> {
 
+    // save states when view destroyed and recreate
     private val intentsBC: BroadcastChannel<I> = BroadcastChannel(capacity = Channel.BUFFERED)
 
     private val viewStates: StateFlow<S> by lazy(NONE) { initViewStateFlow() }
@@ -31,21 +33,30 @@ abstract class BaseViewModel<I : IMviIntent, S : IMviState, A : IMviAction, R : 
 
     protected abstract suspend fun reducer(previousState: S, result: R): S
 
-    override suspend fun processIntents(intent: I) = intentsBC.send(intent)
+    //chi emit value initial dau tien(luc tao view lan dau tien ke ca luc xoay mh)
+    override suspend fun processIntent(intent: I) = intentsBC.send(intent)
 
-    override fun states(): Flow<S> = viewStates
+    override fun states(): StateFlow<S> = viewStates
 
     private fun initViewStateFlow(): StateFlow<S> {
         return MutableStateFlow(initState()).apply {
             intentsBC.asFlow()
+                .onEach { logDebug(value.toString()) }
                 .compose(intentFilter)
                 .map(::actionFormIntent)
                 .compose(actionProcessor)
                 .scan(initState(), ::reducer)
                 .onEach { value = it }
-                .distinctUntilChanged()
+                .onEach { logDebug(value.toString()) }
                 .catch { logDebug(it.message.toString()) }
-                .launchIn(viewModelScope)
+                .launchIn(CoroutineScope(Dispatchers.IO))
+            onStart { emit(value) }
+            catch { logDebug(it.message.toString()) }
         }
+    }
+
+    override fun onCleared() {
+        intentsBC.cancel()
+        super.onCleared()
     }
 }

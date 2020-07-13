@@ -1,10 +1,7 @@
 package com.example.mvisamplecoroutines.domain.repository
 
-import com.example.mvisamplecoroutines.domain.entity.Author
-import com.example.mvisamplecoroutines.domain.entity.Book
+import com.example.mvisamplecoroutines.domain.entity.User
 
 interface Repository {
-    suspend fun getAuthors(): List<Author>
-    suspend fun getBooks(): List<Book>
-    suspend fun login(email: String, password: String): String
+    suspend fun login(email: String, password: String): User
 }
