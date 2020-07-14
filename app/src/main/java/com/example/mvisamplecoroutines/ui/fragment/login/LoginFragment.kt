@@ -96,9 +96,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     .map { LoginIntent.SubmitLogin(it.first ?: "", it.second ?: "") }
             )
                 .onStart { LoginIntent.Initial }
-                .onEach {
-                    viewModel.processIntent(it)
-                }
+                .onEach { viewModel.processIntent(it) }
                 .launchIn(lifecycleScope)
     }
 }

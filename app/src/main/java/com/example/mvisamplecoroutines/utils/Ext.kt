@@ -75,17 +75,14 @@ fun View.hideKeyBoard() {
         ?.hideSoftInputFromWindow(this.windowToken, 0)
 }
 
+@ExperimentalCoroutinesApi
 fun <T> Flow<T>.replay(count: Int): Flow<T> {
     require(count >= 0) { "Drop count should be non-negative, but had $count" }
-    return flow {
-        var index = 0
-        val listValueReplay = arrayListOf<T>()
-        this@replay.collect {
-            emit(it)
-            if (index++ + count >= this@replay.count()) listValueReplay.add(it)
-        }
-        listValueReplay.asFlow().collect {
-            emit(it)
-        }
+    val lastValue = this@replay.drop(1)
+    return this@replay.onStart {
+        emit(lastValue.first())
+    }.catch {
+        if (it is NoSuchElementException)
+            logDebug("not require first value")
     }
 }

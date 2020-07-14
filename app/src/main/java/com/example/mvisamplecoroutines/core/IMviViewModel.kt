@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface IMviViewModel<I : IMviIntent, S : IMviState> {
     suspend fun processIntent(intent: I)
-    fun states(): StateFlow<S>
+    fun states(): Flow<S>
 }

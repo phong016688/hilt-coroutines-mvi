@@ -21,7 +21,7 @@ abstract class BaseViewModel<I : IMviIntent, S : IMviState, A : IMviAction, R : 
     // save states when view destroyed and recreate
     private val intentsBC: BroadcastChannel<I> = BroadcastChannel(capacity = Channel.BUFFERED)
 
-    private val viewStates: StateFlow<S> by lazy(NONE) { initViewStateFlow() }
+    private val viewStates: Flow<S> by lazy(NONE) { initViewStateFlow() }
 
     protected abstract fun initState(): S
 
@@ -36,23 +36,17 @@ abstract class BaseViewModel<I : IMviIntent, S : IMviState, A : IMviAction, R : 
     //chi emit value initial dau tien(luc tao view lan dau tien ke ca luc xoay mh)
     override suspend fun processIntent(intent: I) = intentsBC.send(intent)
 
-    override fun states(): StateFlow<S> = viewStates
+    override fun states(): Flow<S> = viewStates
 
-    private fun initViewStateFlow(): StateFlow<S> {
-        return MutableStateFlow(initState()).apply {
-            intentsBC.asFlow()
-                .onEach { logDebug(value.toString()) }
-                .compose(intentFilter)
-                .map(::actionFormIntent)
-                .compose(actionProcessor)
-                .scan(initState(), ::reducer)
-                .onEach { value = it }
-                .onEach { logDebug(value.toString()) }
-                .catch { logDebug(it.message.toString()) }
-                .launchIn(CoroutineScope(Dispatchers.IO))
-            onStart { emit(value) }
-            catch { logDebug(it.message.toString()) }
-        }
+    private fun initViewStateFlow(): Flow<S> {
+        return intentsBC.asFlow()
+            .compose(intentFilter)
+            .map(::actionFormIntent)
+            .compose(actionProcessor)
+            .scan(initState(), ::reducer)
+            .distinctUntilChanged()
+            .replay(1)
+            .catch { logDebug(it.message.toString()) }
     }
 
     override fun onCleared() {
