@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import com.example.mvisamplecoroutines.ui.fragment.login.A
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -85,4 +86,7 @@ fun <T> Flow<T>.replay(count: Int): Flow<T> {
         if (it is NoSuchElementException)
             logDebug("not require first value")
     }
+}
+private class B : A() {
+
 }

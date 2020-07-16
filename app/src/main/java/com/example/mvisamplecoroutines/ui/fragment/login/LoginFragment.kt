@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.mvisamplecoroutines.R
+import com.example.mvisamplecoroutines.data.source.locale.SessionManager
 import com.example.mvisamplecoroutines.databinding.FragmentLoginBinding
 import com.example.mvisamplecoroutines.domain.entity.User
 import com.example.mvisamplecoroutines.ui.activity.main.MainActivity
@@ -17,6 +18,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlin.random.Random
 
 @InternalCoroutinesApi
 @FlowPreview
@@ -80,23 +82,24 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun handleEvents() {
-            merge(
-                binding.emailEditText
-                    .onTextChangesEvents()
-                    .debounce(500)
-                    .map { LoginIntent.EnterEmailField(it.toString()) },
-                binding.passwordEditText
-                    .onTextChangesEvents()
-                    .debounce(500)
-                    .map { LoginIntent.EnterPasswordField(it.toString()) },
-                binding.authButton
-                    .clicks()
-                    .debounce(500)
-                    .map { binding.emailEditText.text?.toString() to binding.passwordEditText.text?.toString() }
-                    .map { LoginIntent.SubmitLogin(it.first ?: "", it.second ?: "") }
-            )
-                .onStart { LoginIntent.Initial }
-                .onEach { viewModel.processIntent(it) }
-                .launchIn(lifecycleScope)
+        merge(
+            binding.emailEditText
+                .onTextChangesEvents()
+                .debounce(500)
+                .map { LoginIntent.EnterEmailField(it.toString()) },
+            binding.passwordEditText
+                .onTextChangesEvents()
+                .debounce(500)
+                .map { LoginIntent.EnterPasswordField(it.toString()) },
+            binding.authButton
+                .clicks()
+                .debounce(500)
+                .map { binding.emailEditText.text?.toString() to binding.passwordEditText.text?.toString() }
+                .map { LoginIntent.SubmitLogin(it.first ?: "", it.second ?: "") }
+        )
+            .onStart { LoginIntent.Initial }
+            .onEach { viewModel.processIntent(it) }
+            .launchIn(lifecycleScope)
+        arrayListOf<String>("").filterNotNull()
     }
 }

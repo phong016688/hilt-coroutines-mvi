@@ -1,4 +1,4 @@
-package com.example.mvisamplecoroutines.data.source.response
+package com.example.mvisamplecoroutines.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 

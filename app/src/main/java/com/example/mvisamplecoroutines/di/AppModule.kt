@@ -1,19 +1,13 @@
 package com.example.mvisamplecoroutines.di
 
 import com.example.mvisamplecoroutines.BuildConfig
-import com.example.mvisamplecoroutines.data.source.service.RestFullApi
-import com.example.mvisamplecoroutines.ui.fragment.login.LoginModule
-import com.example.mvisamplecoroutines.utils.Validator
-import com.example.mvisamplecoroutines.utils.ValidatorImpl
+import com.example.mvisamplecoroutines.data.source.remote.service.RestFullApi
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request

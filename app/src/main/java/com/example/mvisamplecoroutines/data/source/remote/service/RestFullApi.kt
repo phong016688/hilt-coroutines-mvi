@@ -1,8 +1,8 @@
-package com.example.mvisamplecoroutines.data.source.service
+package com.example.mvisamplecoroutines.data.source.remote.service
 
 import com.example.mvisamplecoroutines.data.source.BaseResponse
-import com.example.mvisamplecoroutines.data.source.response.LoginResponse
-import com.example.mvisamplecoroutines.data.source.response.ProfileResponse
+import com.example.mvisamplecoroutines.data.source.remote.response.LoginResponse
+import com.example.mvisamplecoroutines.data.source.remote.response.ProfileResponse
 import retrofit2.http.*
 
 interface RestFullApi {
