@@ -1,17 +1,20 @@
 package com.example.mvisamplecoroutines.utils
 
 import android.content.Context
-import android.hardware.input.InputManager
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import com.example.mvisamplecoroutines.ui.fragment.login.A
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
@@ -51,7 +54,7 @@ fun logDebug(s: String, tag: String = "###########") {
     Log.d(tag, s)
 }
 
-fun <T, R> Flow<T>.compose(transformer: Flow<T>.() -> Flow<R>): Flow<R> {
+inline fun <T, R> Flow<T>.compose(transformer: Flow<T>.() -> Flow<R>): Flow<R> {
     return transformer(this)
 }
 
@@ -87,6 +90,7 @@ fun <T> Flow<T>.replay(count: Int): Flow<T> {
             logDebug("not require first value")
     }
 }
-private class B : A() {
 
+fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
+    compositeDisposable.add(this)
 }

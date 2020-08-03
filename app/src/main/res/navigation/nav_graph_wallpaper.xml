@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_wallpaper"
+    app:startDestination="@id/listWallpaperFragment">
+    <fragment
+        android:id="@+id/listWallpaperFragment"
+        android:name="com.example.mvisamplecoroutines.ui.activity.wallpaper.ListImageBackgroundFragment"
+        android:label="List Wallpaper"
+        tools:layout="@layout/fragment_list_image_background" />
+</navigation>

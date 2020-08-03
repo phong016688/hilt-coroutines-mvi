@@ -1,6 +1,7 @@
 package com.example.mvisamplecoroutines.data.source.locale
 
 import com.example.mvisamplecoroutines.domain.entity.User
+import kotlinx.coroutines.InternalCoroutinesApi
 
 abstract class SessionManager {
     abstract fun currentUser(): User
@@ -23,4 +24,14 @@ abstract class SessionManager {
         }
 
     }
+}
+
+@InternalCoroutinesApi
+fun sessionManager() = object : Lazy<SessionManager> {
+    private var cache: SessionManager? = null
+
+    override val value: SessionManager
+        get() = cache ?: SessionManager.also { cache = it }
+
+    override fun isInitialized(): Boolean = cache != null
 }

@@ -1,5 +1,6 @@
 package com.example.mvisamplecoroutines.utils
 
+import android.widget.TextView
 import javax.inject.Inject
 
 interface Validator {
@@ -12,7 +13,7 @@ class ValidatorImpl @Inject constructor() : Validator {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         return when {
             email.isEmpty() -> "This field is required"
-            email.matches(emailPattern.toRegex()) -> "Email invalid"
+            !email.matches(emailPattern.toRegex()) -> "Email invalid"
             else -> ""
         }
     }

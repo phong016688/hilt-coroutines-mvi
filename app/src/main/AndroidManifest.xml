@@ -14,13 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MVISampleCoroutines"
         tools:ignore="MissingAutoRevokeTolerance">
-        <activity android:name="com.example.mvisamplecoroutines.ui.activity.main.MainActivity">
+        <activity android:name=".ui.activity.wallpaper.WallPaperActivity"></activity>
+        <activity android:name=".ui.activity.NavigatorActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.main.TeamBuildingActivity"></activity>
     </application>
 
 </manifest>

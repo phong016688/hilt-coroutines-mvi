@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvisamplecoroutines.R
-import com.example.mvisamplecoroutines.ui.activity.main.MainActivity
+import com.example.mvisamplecoroutines.ui.activity.main.TeamBuildingActivity
 import com.example.mvisamplecoroutines.ui.fragment.home.dummy.DummyContent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? MainActivity)?.showBottomNavigation()
+        (activity as? TeamBuildingActivity)?.showBottomNavigation()
     }
 
     companion object {

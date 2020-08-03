@@ -4,69 +4,68 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.mvisamplecoroutines.R
-import com.example.mvisamplecoroutines.data.source.locale.SessionManager
 import com.example.mvisamplecoroutines.databinding.FragmentLoginBinding
-import com.example.mvisamplecoroutines.domain.entity.User
-import com.example.mvisamplecoroutines.ui.activity.main.MainActivity
+import com.example.mvisamplecoroutines.ui.activity.main.TeamBuildingActivity
 import com.example.mvisamplecoroutines.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.*
-import kotlin.random.Random
+import kotlinx.coroutines.rx3.asObservable
+import javax.inject.Inject
 
 @InternalCoroutinesApi
 @FlowPreview
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
-    private val binding by viewBindings(FragmentLoginBinding::bind)
     private val viewModel: LoginViewModel by viewModels()
+    private val binding by viewBindings(FragmentLoginBinding::bind)
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? MainActivity)?.hideBottomNavigation()
+        (activity as? TeamBuildingActivity)?.hideBottomNavigation()
         observeLoginStates()
         handleEvents()
     }
 
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
+    }
+
     private fun observeLoginStates() {
-        viewModel.states()
-            .onEach { state ->
-                renderLoadingView(state.isLoading)
-                renderEmailEditText(state.emailValidateErrorMessage)
-                renderPasswordEditText(state.passwordValidateErrorMessage)
-                renderSnackBar(state.errorMessage)
-                handleGoToMainScreen(state.user)
-            }.launchIn(lifecycleScope)
+        viewModel.viewStates()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                renderEmailEditText(it.emailErrorMessage)
+                renderPasswordEditText(it.passwordErrorMessage)
+                renderLoadingView(it.isLoading)
+                renderSnackBar(it.snackBarMessage)
+            }.addTo(compositeDisposable)
     }
 
-    private fun handleGoToMainScreen(user: User?) {
-        if (user != null) {
-            findNavController().navigate(R.id.homeFragment)
-        }
-    }
-
-    private fun renderSnackBar(errorMessage: String) {
-        if (errorMessage.isEmpty()) return
+    private fun renderSnackBar(errorMessage: String?) {
+        if (errorMessage.isNullOrEmpty()) return
         Snackbar.make(binding.root, errorMessage, 1000).show()
     }
 
-    private fun renderPasswordEditText(error: String) {
-        if (error.isEmpty()) {
+    private fun renderPasswordEditText(error: String?) {
+        if (error.isNullOrEmpty()) {
             binding.passwordEditText.error = null
         } else {
             binding.passwordEditText.error = error
         }
     }
 
-    private fun renderEmailEditText(error: String) {
-        if (error.isEmpty()) {
+    private fun renderEmailEditText(error: String?) {
+        if (error.isNullOrEmpty()) {
             binding.emailEditText.error = null
         } else {
             binding.emailEditText.error = error
@@ -98,8 +97,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 .map { LoginIntent.SubmitLogin(it.first ?: "", it.second ?: "") }
         )
             .onStart { LoginIntent.Initial }
-            .onEach { viewModel.processIntent(it) }
-            .launchIn(lifecycleScope)
-        arrayListOf<String>("").filterNotNull()
+            .asObservable()
+            .also { viewModel.processIntents(it).addTo(compositeDisposable) }
     }
 }

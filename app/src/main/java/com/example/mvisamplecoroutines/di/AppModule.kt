@@ -1,6 +1,8 @@
 package com.example.mvisamplecoroutines.di
 
+import android.content.Context
 import com.example.mvisamplecoroutines.BuildConfig
+import com.example.mvisamplecoroutines.data.source.locale.preferences.SharePreferences
 import com.example.mvisamplecoroutines.data.source.remote.service.RestFullApi
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -8,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -65,6 +68,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideApi(retrofit: Retrofit): RestFullApi = retrofit.create(RestFullApi::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(@ApplicationContext context: Context) = SharePreferences(context)
 
     private fun createInterceptor(): Interceptor {
         return Interceptor {

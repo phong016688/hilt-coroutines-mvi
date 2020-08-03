@@ -1,8 +1,9 @@
 package com.example.mvisamplecoroutines.ui.activity.main
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -11,19 +12,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.example.mvisamplecoroutines.R
-import com.example.mvisamplecoroutines.databinding.ActivityMainBinding
+import com.example.mvisamplecoroutines.databinding.ActivityMainTeambuidlingBinding
 import com.example.mvisamplecoroutines.utils.gone
 import com.example.mvisamplecoroutines.utils.onItemSelectedEvents
 import com.example.mvisamplecoroutines.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlin.LazyThreadSafetyMode.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-    private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+class TeamBuildingActivity : AppCompatActivity() {
+    private val binding by lazy { ActivityMainTeambuidlingBinding.inflate(layoutInflater) }
     private val navController: NavController by lazy(NONE) { initNavController() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,8 +63,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initNavController(): NavController {
-        return supportFragmentManager.findFragmentById(binding.navHostContainer.id)
-            ?.findNavController() ?: findNavController(binding.navHostContainer.id)
+        return supportFragmentManager.findFragmentById(binding.navHostContainerTeamBuilding.id)
+            ?.findNavController() ?: findNavController(binding.navHostContainerTeamBuilding.id)
     }
 
     private fun setupBottomNavigation() {
@@ -74,5 +76,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupActionBar() {
         binding.toolbar.setupWithNavController(navController)
+    }
+
+    companion object {
+        private val TAG = this::class.java.simpleName
+        fun getInstance(context: Context): Intent {
+            return Intent(context, TeamBuildingActivity::class.java)
+        }
     }
 }

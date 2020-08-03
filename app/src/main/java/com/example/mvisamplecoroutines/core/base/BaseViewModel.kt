@@ -21,8 +21,6 @@ abstract class BaseViewModel<I : IMviIntent, S : IMviState, A : IMviAction, R : 
     // save states when view destroyed and recreate
     private val intentsBC: BroadcastChannel<I> = BroadcastChannel(capacity = Channel.BUFFERED)
 
-    private val viewStates: Flow<S> by lazy(NONE) { initViewStateFlow() }
-
     protected abstract fun initState(): S
 
     protected abstract val actionProcessor: FLowTransformer<A, R>
@@ -36,15 +34,14 @@ abstract class BaseViewModel<I : IMviIntent, S : IMviState, A : IMviAction, R : 
     //chi emit value initial dau tien(luc tao view lan dau tien ke ca luc xoay mh)
     override suspend fun processIntent(intent: I) = intentsBC.send(intent)
 
-    override fun states(): Flow<S> = viewStates
+    override fun states(): Flow<S> = viewStates()
 
-    private fun initViewStateFlow(): Flow<S> {
+    private fun viewStates(): Flow<S> {
         return intentsBC.asFlow()
             .compose(intentFilter)
             .map(::actionFormIntent)
             .compose(actionProcessor)
             .scan(initState(), ::reducer)
-            .distinctUntilChanged()
             .replay(1)
             .catch { logDebug(it.message.toString()) }
     }

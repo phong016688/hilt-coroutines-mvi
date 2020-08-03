@@ -5,13 +5,21 @@ import com.example.mvisamplecoroutines.core.IMviIntent
 import com.example.mvisamplecoroutines.core.IMviResult
 import com.example.mvisamplecoroutines.core.IMviState
 import com.example.mvisamplecoroutines.domain.entity.User
-import javax.xml.validation.Validator
 
 sealed class LoginIntent : IMviIntent {
     data class SubmitLogin(val email: String, val password: String) : LoginIntent()
     data class EnterEmailField(val email: String) : LoginIntent()
     data class EnterPasswordField(val password: String) : LoginIntent()
     object Initial : LoginIntent()
+}
+
+fun LoginIntent.toLoginAction(): LoginAction {
+    return when (this) {
+        is LoginIntent.Initial -> LoginAction.Initial
+        is LoginIntent.SubmitLogin -> LoginAction.LoginWithEmailPassword(email, password)
+        is LoginIntent.EnterEmailField -> LoginAction.ValidateEmail(email)
+        is LoginIntent.EnterPasswordField -> LoginAction.ValidatePassword(password)
+    }
 }
 
 sealed class LoginAction : IMviAction {
@@ -32,9 +40,34 @@ sealed class LoginResult : IMviResult {
 }
 
 data class LoginState(
-    val emailValidateErrorMessage: String = "",
-    val passwordValidateErrorMessage: String = "",
-    val errorMessage: String = "",
+    val emailErrorMessage: String? = null,
+    val passwordErrorMessage: String? = null,
     val isLoading: Boolean = false,
+    val snackBarMessage: String? = null,
+
     val user: User? = null
 ) : IMviState
+
+fun LoginState.reducer(result: LoginResult): LoginState {
+    return when (result) {
+        is LoginResult.LoginSuccess -> this.copy(
+            isLoading = false,
+            user = result.user,
+            emailErrorMessage = null,
+            passwordErrorMessage = null,
+            snackBarMessage = null
+        )
+        is LoginResult.LoginFailure -> this.copy(
+            isLoading = false,
+            user = null,
+            emailErrorMessage = null,
+            passwordErrorMessage = null,
+            snackBarMessage = result.error
+        )
+        is LoginResult.Loading -> this.copy(isLoading = true)
+        is LoginResult.PasswordValid -> this.copy(passwordErrorMessage = null)
+        is LoginResult.EmailValid -> this.copy(emailErrorMessage = null)
+        is LoginResult.EmailInValid -> this.copy(emailErrorMessage = result.errorMessage)
+        is LoginResult.PasswordInValid -> this.copy(passwordErrorMessage = result.errorMessage)
+    }
+}
