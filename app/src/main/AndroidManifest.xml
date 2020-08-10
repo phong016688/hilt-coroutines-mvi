@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.mvisamplecoroutines">
+    package="com.ankit.trendinggit">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".MyApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:name=".TrendingGitApp"
+        android:allowBackup="false"
+        android:icon="@drawable/git_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MVISampleCoroutines"
-        tools:ignore="MissingAutoRevokeTolerance">
-        <activity android:name=".ui.activity.wallpaper.WallPaperActivity"></activity>
-        <activity android:name=".ui.activity.NavigatorActivity">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name="com.ankit.trendinggit.view.ui.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.main.TeamBuildingActivity"></activity>
     </application>
 
 </manifest>

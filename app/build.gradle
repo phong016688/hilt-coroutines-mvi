@@ -1,97 +1,54 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
-    id 'dagger.hilt.android.plugin'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.0"
-
+    compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.mvisamplecoroutines"
-        minSdkVersion 26
-        targetSdkVersion 30
+        applicationId "com.ankit.trendinggit"
+        minSdkVersion 17
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", '"https://fakerestapi.azurewebsites.net/api/"'
-            buildConfigField "String", "OMDb_API_KEY", '"18c98888"'
-        }
-        debug {
-            buildConfigField "String", "BASE_URL", '"https://fakerestapi.azurewebsites.net/api/"'
-            buildConfigField "String", "OMDb_API_KEY", '"18c98888"'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-    buildFeatures {
-        viewBinding true
+    dataBinding {
+        enabled = true
     }
 }
 
 dependencies {
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // RxJava 3
-    implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
-    implementation "io.reactivex.rxjava3:rxjava:3.0.4"
+    // Navigation component
+    implementation "android.arch.navigation:navigation-fragment:$rootProject.nav_version" // use -ktx for Kotlin
+    implementation "android.arch.navigation:navigation-ui:$rootProject.nav_version" // use -ktx for Kotlin
+    implementation "android.arch.navigation:navigation-runtime-ktx:$rootProject.nav_version" // use -ktx for Kotlin
+    implementation "android.arch.work:work-runtime-ktx:$rootProject.workVersion" // use -ktx for Kotlin
 
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.72"
-    implementation "androidx.core:core-ktx:1.3.0"
+    // Anko
+    implementation "org.jetbrains.anko:anko:$rootProject.anko_version"
+    implementation "org.jetbrains.anko:anko-commons:$rootProject.anko_version"
 
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
-    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
-    implementation "com.squareup.okhttp3:okhttp:4.7.2"
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
-    //glide
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+    // Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.3.7'
-
-    // dagger hilt
-    implementation "com.google.dagger:hilt-android:2.28-alpha"
-    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
-
-    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01'
-    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha01'
-    //ktx
-    implementation "androidx.core:core-ktx:1.3.0"
-    implementation "androidx.fragment:fragment-ktx:1.2.5"
-
-    //Navigation
-    def nav_version = "2.3.0"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    // Databinding compiler
+    kapt 'com.android.databinding:compiler:3.2.0-alpha10'
 }

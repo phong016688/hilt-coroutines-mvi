@@ -1,86 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ThemeBlack" parent="Theme.MVISampleCoroutines">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="bottomNavigationStyle">@style/BottomNavigationBlack</item>
     </style>
 
-    <style name="ThemeBlue" parent="Theme.MVISampleCoroutines">
-        <item name="colorPrimary">@color/md_blue_500</item>
-        <item name="colorPrimaryDark">@color/md_blue_700</item>
-        <item name="colorAccent">@color/colorDetailAccent</item>
-        <item name="bottomNavigationStyle">@style/BottomNavigationBlue</item>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="ThemeGray" parent="Theme.MVISampleCoroutines">
-        <item name="colorPrimary">@color/up_button</item>
-        <item name="colorPrimaryDark">@color/gray</item>
-        <item name="colorAccent">@color/off_white</item>
-        <item name="bottomNavigationStyle">@style/BottomNavigationGray</item>
-    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="ThemeRed" parent="Theme.MVISampleCoroutines">
-        <item name="colorPrimary">@color/md_red_500</item>
-        <item name="colorPrimaryDark">@color/md_red_700</item>
-        <item name="colorAccent">@android:color/holo_red_light</item>
-        <item name="bottomNavigationStyle">@style/BottomNavigationRed</item>
-    </style>
-
-    <style name="ThemeYellow" parent="Theme.MVISampleCoroutines">
-        <item name="colorPrimary">@color/md_yellow_A400</item>
-        <item name="colorPrimaryDark">@color/colorAccent</item>
-        <item name="colorAccent">@color/off_white</item>
-        <item name="bottomNavigationStyle">@style/BottomNavigationYellow</item>
-    </style>
-
-    <style name="ThemeGreen" parent="Theme.MVISampleCoroutines">
-        <item name="colorPrimary">@color/md_green_500</item>
-        <item name="colorPrimaryDark">@color/md_green_700</item>
-        <item name="colorAccent">@android:color/holo_green_light</item>
-        <item name="bottomNavigationStyle">@style/BottomNavigationGreen</item>
-    </style>
-
-    //style bottom navigation
-
-    <style name="BottomNavigationBlack" parent="Theme.MVISampleCoroutines">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="itemBackground">@color/colorPrimary</item>
-    </style>
-
-    <style name="BottomNavigationBlue" parent="Theme.MVISampleCoroutines">
-        <item name="android:background">@color/md_blue_500</item>
-        <item name="itemBackground">@color/md_blue_500</item>
-    </style>
-
-    <style name="BottomNavigationGray" parent="Theme.MVISampleCoroutines">
-        <item name="android:background">@color/up_button</item>
-        <item name="itemBackground">@color/up_button</item>
-    </style>
-
-    <style name="BottomNavigationRed" parent="Theme.MVISampleCoroutines">
-        <item name="android:background">@color/md_red_500</item>
-        <item name="itemBackground">@color/md_red_500</item>
-    </style>
-
-    <style name="BottomNavigationYellow" parent="Theme.MVISampleCoroutines">
-        <item name="android:background">@color/md_yellow_A400</item>
-        <item name="itemBackground">@color/md_yellow_A400</item>
-    </style>
-
-    <style name="BottomNavigationGreen" parent="Theme.MVISampleCoroutines">
-        <item name="android:background">@color/md_green_500</item>
-        <item name="itemBackground">@color/md_green_500</item>
-    </style>
-
-    <style name="ScrollbarShapeStyle">
-        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
-        <item name="android:scrollbarStyle">outsideOverlay</item>
-        <item name="android:scrollbars">vertical</item>
-        <item name="android:fadeScrollbars">false</item>
-        <item name="android:scrollbarThumbVertical">@drawable/thumb</item>
-        <item name="android:scrollbarTrackVertical">@drawable/track</item>
-        <item name="android:scrollbarSize">10dp</item>
-    </style>
 </resources>
